@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title><?= $title ?></title>
+    <link rel="stylesheet" href="/Index/view/web/layout.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <?= $head ?>
+</head>
+<body>
+<div class="header">
+    <a href="/" class="header__homepage">Homepage</a>
+    <button class="header__add" onclick="togglePopup()">
+        ADD PRODUCT
+    </button>
+    <form action="/" method="get" class="header__search" id="search">
+        <input type="text" name="query" class="header__search__field"
+            <?php if (isset($_GET['query'])) {echo 'value = "'.$_GET['query'].'"';} ?>
+        >
+        <input type="submit" value="Search" class="header__search__button">
+    </form>
+</div>
+
+<div class="popup__background" onclick=togglePopup()></div>
+<div class="popup">
+    <div id="postMessage"></div>
+    <form class="popup__form" action="/catalog/product/save" method="post" id="addProduct">
+        <p id="successMessage"></p>
+        <input required placeholder="Name" name="name" type="text" class="popup__form__input" id="form__name">
+        <input placeholder="Number (SKU)" name="sku" type="text" class="popup__form__input" id="form__sku">
+        <input required placeholder="Price" name="price" type="number" class="popup__form__input" id="form__price">
+        <input placeholder="Photo" name="photo" type="file" class="popup__form__input" id="form__photo">
+        <textarea placeholder="Description" name="descr" class="popup__form__input" id="form__descr"></textarea>
+        <select required name="category" class="popup__form__input" id="form__category">
+            <?php
+            foreach ($categories as $category){
+                ?>
+                <option value=<?= $category->getId() ?>><?= $category->getName() ?></option>
+                <?php
+            }
+            ?>
+        </select>
+        <input type="submit" class="popup__form__input" id="form__submit">
+    </form>
+</div>
+<script>
+
+    function togglePopup(){
+        document.querySelector(".popup").classList.toggle("popup--open")
+        document.querySelector(".popup__background").classList.toggle("popup--open")
+    }
+
+
+    $("#addProduct").on('submit', function(e){
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: $("#addProduct")[0].action,
+            data: new FormData(this),
+            dataType: 'json',
+            contentType: false,
+            cache: false,
+            processData:false,
+            success: function(response){
+                if(response['success'] === true){
+                    $("#successMessage").html(response['message']);
+                    setTimeout(function(){
+                        location.reload();
+                    }, 1000);
+                }
+            }
+        });
+    });
+
+    $("#search").on('submit', function(e){
+        e.preventDefault();
+        $.ajax({
+            type: 'GET',
+            url: $("#search")[0].action,
+            data: new FormData(this),
+            dataType: 'json',
+            contentType: false,
+            cache: false,
+            processData:false,
+        });
+    })
+
+</script>
+<?php
+echo $pageContent;
+?>
+
+</body>
+</html>

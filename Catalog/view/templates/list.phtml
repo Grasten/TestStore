@@ -1,0 +1,107 @@
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/Catalog/view/web/list.css">
+</head>
+<div class="list">
+    <div class="list__toolbar">
+        <?php if ($categoryId || $sort || $query)
+        {echo '<a class="list__toolbar__home"
+           href="http://localhost/">
+            Show all products
+        </a>';
+        }  else {
+            echo '<div></div>';
+        }
+        ?>
+
+
+        <form method="get" id="sort" action="/" class="list__toolbar__sort">
+            <span class="list__toolbar__sort__title">Sort by</span>
+            <select name="sort" class="list__toolbar__sort__select">
+                <?php
+
+                if (!isset($_GET['sort'])) {
+                    $_GET['sort'] = "";
+                }
+                $options = array(
+                    array("id_DESC", "Newest -> Oldest"),
+                    array("id_ASC", "Oldest -> Newest"),
+                    array("price_ASC", "Cheap -> Expensive"),
+                    array("price_DESC", "Expensive -> Cheap"),
+                    array("name_ASC", "Alphabetic"),
+                    array("name_DESC", "Reverse Alphabetic"),
+                );
+                foreach ($options as $option) {
+                    $selected = "";
+                    $selected = $option['0'] === $_GET['sort'] ? "selected" : "";
+                    echo ("<option value=".$option["0"]." ".$selected.">".$option["1"]."</option>");
+                }?>
+            </select>
+            <input type="submit" value="Sort" class="list__toolbar__sort__submit">
+        </form>
+    </div>
+    <div class="list__container">
+        <?php /** @var \Catalog\Model\Product $product */ ?>
+        <?php
+        if (!$products) {
+            echo 'Unfortunately, we were not able to find any product that would fit your request :(';
+        }
+        foreach ($products as $product){ ?>
+            <a href=<?=$product->getUrl()?> class="list__container__item">
+                <div class="list__container__item__picture">
+                    <img alt="Image" src=<?= $product->getImageUrl() ?> />
+                </div>
+                <div class="list__container__item__name">
+                    <?=$product->getName()?>
+                </div>
+                <div class="list__container__item__category">
+                    Category: <?=  $categories[$product->getCategoryId()-1]->getName() ?>
+                </div>
+                <div class="list__container__item__price">
+                    <?=$product->getPrice()?>$
+                </div>
+            </a>
+        <?php
+        }
+        ?>
+    </div>
+</div>
+<script>
+    $("#addProduct").on('submit', function(e){
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: $("#addProduct")[0].action,
+            data: new FormData(this),
+            dataType: 'json',
+            contentType: false,
+            cache: false,
+            processData:false,
+            success: function(response){
+                if(response['success'] === true){
+                    $("#successMessage").html(response['message']);
+                    setTimeout(function(){
+                        location.reload();
+                    }, 1000);
+                }
+            }
+        });
+    });
+
+    $("#sort").on('change', function(event) {
+        let sortValue = event.target.value;
+        const urlParams = new URLSearchParams(window.location.search);
+        let cleanUrl = "http://localhost/";
+        if (sortValue) {
+            cleanUrl = url + '?sort=' + sortValue;
+            if (urlParams.get("category")){
+                cleanUrl = url + "&category=" + urlParams.get("category")
+            }
+            if (urlParams.get("query")){
+                cleanUrl = url + "&query=" + urlParams.get("query")
+            }
+        }
+        window.location.href = cleanUrl
+    })
+
+</script>

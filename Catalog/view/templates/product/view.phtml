@@ -1,0 +1,16 @@
+<?php /** @var \Catalog\Model\Product $product */ ?>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/Catalog/view/web/view.css">
+</head>
+<div class="container">
+    <info>
+        <h1 class="name">PRODUCT NAME: <?= $product->getName() ?></h1>
+        <p class="sku">SKU: <?= $product->getSku() ?></p>
+        <p class="price">PRICE: <?= $product->getPrice() ?>$</p>
+        <p class="description">DESCRIPTION: <?= $product->getDescription() ?></p>
+        <p class="category">CATEGORY: <?= $product->getCategoryId() ?></p>
+    </info>
+    <img src=<?= $product->getImageUrl() ?> alt="Product" class="productPicture">
+</div>

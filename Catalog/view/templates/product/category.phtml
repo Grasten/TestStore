@@ -1,0 +1,27 @@
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/Catalog/view/web/list.css">
+</head>
+<div class="list">
+    <div class="list__toolbar">
+        <a class="list__toolbar__home" href="http://localhost/">
+            Show all products
+        </a>
+        <div class="list__toolbar__sort">
+            <span class="list__toolbar__sort__title">Sort by</span>
+            <div class="list__toolbar__sort__select">TYPE</div>
+        </div>
+    </div>
+    <div class="list__container">
+        <?php /** @var \Catalog\Model\Product $product */ ?>
+        <?php foreach (array_reverse($products) as $product){ ?>
+            <a href=<?=$product->getUrl()?> class="list__container__item">
+                <div class="list__container__item__picture"><img src=<?= $product->getImageUrl() ?> alt="IMAGE"></div>
+                <div class="list__container__item__name"><?=$product->getName()?></div>
+                <div class="list__container__item__price"><?=$product->getPrice()?> $</div>
+            </a>
+            <?php
+        }
+        ?>
+    </div>
+</div>

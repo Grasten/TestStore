@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title><?= $title ?></title>
+    <link rel="stylesheet" href="/Index/view/web/layout.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <?= $head ?>
+</head>
+<body>
+<div class="header">
+    <div class="header__menu">
+        <?php
+        foreach ($categories as $category){
+            ?>
+            <button class="header__menu__item <?php if ($category->getId() == $_GET['id']) {
+                echo 'header__menu__item--chosen';} ?>" onclick="addCategorySort(<?= $category->getId() ?>)"
+            >
+                <?= $category->getName() ?>
+            </button>
+        <?php
+        }
+        ?>
+    </div>
+    <a href="/catalog/admin/product/" class="header__add">
+        ADMIN
+    </a>
+    <form action="/" id="search" method="get" class="header__search">
+        <input type="text" name="query" class="header__search__field"
+            <?php if (isset($query)) {echo 'value = "'.$query.'"';} ?>
+        >
+        <input type="submit" value="Search" class="header__search__button">
+    </form>
+</div>
+
+<div class="popup__background" onclick=togglePopup()></div>
+<div class="popup">
+    <div id="postMessage"></div>
+    <form class="popup__form" action="/Index/Product/addProduct" method="post" id="addProduct">
+        <input required placeholder="Name" name="name" type="text" class="popup__form__input" id="form__name">
+        <input required placeholder="Number (SKU)" name="sku" type="text" class="popup__form__input" id="form__sku">
+        <input required placeholder="Price" name="price" type="number" class="popup__form__input" id="form__price">
+        <input placeholder="Photo" name="photo" type="file" class="popup__form__input" id="form__photo">
+        <textarea required placeholder="Description" name="descr" class="popup__form__input" id="form__descr"></textarea>
+        <select required name="category" class="popup__form__input" id="form__category">
+            <?php
+            foreach ($categories as $category){
+                ?>
+                <option value=<?= $category->getId() ?>><?= $category->getName() ?></option>
+                <?php
+            }
+            ?>
+        </select>
+        <input type="submit" class="popup__form__input" id="form__submit">
+    </form>
+</div>
+<script>
+
+    function togglePopup(){
+        document.querySelector(".popup").classList.toggle("popup--open")
+        document.querySelector(".popup__background").classList.toggle("popup--open")
+    }
+
+    $("#search").on('submit', function(e){
+        e.preventDefault();
+        let query = e.target[0].value;
+        const urlParams = new URLSearchParams(window.location.search);
+        let url = "http://localhost/";
+        if (query) {
+            url = url + '?query=' + query;
+            if (urlParams.get("category")){
+                url = url + "&category=" + urlParams.get("category")
+            }
+            if (urlParams.get("sort")){
+                url = url + "&sort=" + urlParams.get("sort")
+            }
+        }
+        window.location.href = url
+    })
+
+    function addCategorySort(categoryId){
+        const urlParams = new URLSearchParams(window.location.search);
+        let url = "http://localhost/"
+        if (categoryId) {
+            url = url + '?category=' + categoryId;
+            if (urlParams.get("sort")){
+                url = url + "&sort=" + urlParams.get("sort")
+            }
+            if (urlParams.get("query")){
+                url = url + "&query=" + urlParams.get("query")
+            }
+        }
+        window.location.href = url
+    }
+    function addQuery(query){
+
+    }
+
+
+</script>
+<?php
+echo $pageContent;
+?>
+
+</body>
+</html>
