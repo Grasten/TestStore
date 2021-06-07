@@ -1,13 +1,18 @@
 .container{
   max-width: 1100px;
   padding: 20px 60px;
-  background-color: rgba(66, 66, 22, 0.23);
   margin: auto;
   min-height: 100vh;
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-gap: 50px;
-  &>.productPicture{
+  &__picture{
     max-width: 25vw;
+  }
+  &__info{
+    font-family: sans-serif;
+    &>*{
+      padding: 5px 0;
+    }
   }
 }

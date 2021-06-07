@@ -5,12 +5,13 @@
     <link rel="stylesheet" href="/Catalog/view/web/view.css">
 </head>
 <div class="container">
-    <info>
-        <h1 class="name">PRODUCT NAME: <?= $product->getName() ?></h1>
-        <p class="sku">SKU: <?= $product->getSku() ?></p>
-        <p class="price">PRICE: <?= $product->getPrice() ?>$</p>
-        <p class="description">DESCRIPTION: <?= $product->getDescription() ?></p>
-        <p class="category">CATEGORY: <?= $product->getCategoryId() ?></p>
-    </info>
-    <img src=<?= $product->getImageUrl() ?> alt="Product" class="productPicture">
+    <div class="container__info">
+        <h1 class="container__info__name">Product name: <?= $product->getName() ?></h1>
+        <p class="container__info__sku">Sku number: <?= $product->getSku() ?></p>
+        <p class="container__info__price">Price: <?= $product->getPrice() ?>$</p>
+        <p class="container__info__description">Description: <?= $product->getDescription() ?></p>
+        <p class="container__info__category">Category: <?= $category ?></p>
+        <p class="container__info__date">Date of creation: <?= $product->getDate() ?></p>
+    </div>
+    <img src=<?= $product->getImageUrl() ?> alt="Product" class="container__picture" alt="product">
 </div>

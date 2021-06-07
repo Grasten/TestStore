@@ -4,31 +4,23 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <div class="list">
-    <div class="list__toolbar">
-        <span class="list__toolbar__title">Sort by</span>
-        <div class="list__toolbar__select">TYPE</div>
-    </div>
     <div class="list__container">
         <?php /** @var \Catalog\Model\Product $product */ ?>
         <?php foreach ($products as $product){
             ?>
 
             <div class="list__container__row" id=<?= $product->getId() ?>>
-                <div class="list__container__row__picture"><img src=<?= $product->getImageUrl() ?> alt="Image"></div>
-                <div class="list__container__row__name"><?=$product->getName()?></div>
-                <div class="list__container__row__price"><?=$product->getPrice()?>$</div>
-                <div class="list__container__row__description">Description: <?=$product->getDescription()?></div>
+                <p class="list__container__row__picture"><img src=<?= $product->getImageUrl() ?> alt="Image"></p>
+                <p class="list__container__row__name"><?=$product->getName()?></p>
+                <p class="list__container__row__price"><?=$product->getPrice()?>$</p>
+                <p class="list__container__row__description">Description: <?=$product->getDescription()?></p>
                 <div class="list__container__row__action">
                     <a href=<?=$product->getUrl()?>>
                         VIEW
                     </a>
-                    <br>
-                    <br>
                     <a href=<?= "http://localhost/catalog/product/editpage/?id=".$product->getId()?>>
                         EDIT
                     </a>
-                    <br>
-                    <br>
                     <form action="/catalog/product/delete" class="deleteProduct" method="post">
                         <input type="hidden" value=<?= $product->getId() ?> name="id">
                         <input type="submit" value="DELETE" class="list__container__row__action__delete">

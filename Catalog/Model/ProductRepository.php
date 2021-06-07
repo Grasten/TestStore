@@ -22,7 +22,7 @@ class ProductRepository
         }
 
         if ($filters['query'] && $filters['category']){
-            $sqlQuery = $sqlQuery.' AND concat(`name`, `descr`, `sku`) LIKE "'.$filters["query"].'"' ;
+            $sqlQuery = $sqlQuery.' AND (`name` LIKE "%'.$filters["query"].'%" or `descr` LIKE "%'.$filters["query"].'%" or `sku` LIKE "%'.$filters["query"].'%")' ;
         } else if ($filters['query']) {
             $sqlQuery = $sqlQuery.'  WHERE (`name` LIKE "%'.$filters["query"].'%" or `descr` LIKE "%'.$filters["query"].'%" or `sku` LIKE "%'.$filters["query"].'%")'  ;
         }
@@ -89,9 +89,9 @@ class ProductRepository
     public function save(array $data, $imageData){
         $pdo = DbAdapter::getPDO();
 
-        move_uploaded_file($imageData['photo']['tmp_name'], '/var/www/html/images/' . $imageData['photo']['name']);
+        move_uploaded_file($_FILES['photo']['tmp_name'], '/var/www/html/images/' . $_FILES['photo']['name']);
         $stmt = $pdo->prepare(
-            'INSERT INTO `product` (`name`, `sku`, `price`, `descr`, `category`, `image`) VALUES (?,?,?,?,?,?)'
+            'INSERT INTO `product` (`name`, `sku`, `price`, `descr`, `category`, image) VALUES (?,?,?,?,?,?)'
         );
         $stmt->execute(array(
             $data['name'],
@@ -101,5 +101,56 @@ class ProductRepository
             $data['category'],
             $imageData['photo']['name']
         ));
+    }
+
+    public function edit(array $data, $imageData){
+        $pdo = DbAdapter::getPDO();
+
+        if ($_FILES['photo']['name']) {
+            move_uploaded_file($_FILES['photo']['tmp_name'], '/var/www/html/images/' . $_FILES['photo']['name']);
+        }
+        $pdo = DbAdapter::getPDO();
+
+        if ($imageData['photo']['name']) {
+            $stmt = $pdo->prepare(
+                'UPDATE product SET
+                name = ?,
+                sku = ?,
+                price = ?,
+                descr = ?,
+                category = ?,
+                image = ?
+                    WHERE
+                id = ?;'
+            );
+            $stmt->execute(array(
+                $data['name'],
+                $data['sku'],
+                $data['price'],
+                $data['descr'],
+                $data['category'],
+                $imageData['photo']['name'],
+                $data['id'],
+            ));
+        } else {
+            $stmt = $pdo->prepare(
+                'UPDATE product SET
+                name = ?,
+                sku = ?,
+                price = ?,
+                descr = ?,
+                category = ?
+                    WHERE
+                id = ?;'
+            );
+            $stmt->execute(array(
+                $data['name'],
+                $data['sku'],
+                $data['price'],
+                $data['descr'],
+                $data['category'],
+                $data['id'],
+            ));
+        }
     }
 }

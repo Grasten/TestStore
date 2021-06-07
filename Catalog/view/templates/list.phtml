@@ -4,8 +4,8 @@
 </head>
 <div class="list">
     <div class="list__toolbar">
-        <?php if ($categoryId || $sort || $query)
-        {echo '<a class="list__toolbar__home"
+        <?php if ($categoryId || $sort || $query) {
+            echo '<a class="list__toolbar__home"
            href="http://localhost/">
             Show all products
         </a>';
@@ -34,10 +34,9 @@
                 foreach ($options as $option) {
                     $selected = "";
                     $selected = $option['0'] === $_GET['sort'] ? "selected" : "";
-                    echo ("<option value=".$option["0"]." ".$selected.">".$option["1"]."</option>");
+                    echo ("<option class='list__toolbar__sort__select__option' value=".$option["0"]." ".$selected.">".$option["1"]."</option>");
                 }?>
             </select>
-            <input type="submit" value="Sort" class="list__toolbar__sort__submit">
         </form>
     </div>
     <div class="list__container">
@@ -91,17 +90,17 @@
     $("#sort").on('change', function(event) {
         let sortValue = event.target.value;
         const urlParams = new URLSearchParams(window.location.search);
-        let cleanUrl = "http://localhost/";
+        let url = "http://localhost/";
         if (sortValue) {
-            cleanUrl = url + '?sort=' + sortValue;
+            url = url + '?sort=' + sortValue;
             if (urlParams.get("category")){
-                cleanUrl = url + "&category=" + urlParams.get("category")
+                url = url + "&category=" + urlParams.get("category")
             }
             if (urlParams.get("query")){
-                cleanUrl = url + "&query=" + urlParams.get("query")
+                url = url + "&query=" + urlParams.get("query")
             }
         }
-        window.location.href = cleanUrl
+        window.location.href = url
     })
 
 </script>

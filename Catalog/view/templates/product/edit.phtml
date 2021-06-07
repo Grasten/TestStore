@@ -7,42 +7,70 @@
     <div id="editMessage"></div>
 
     <form class="edit__form" action="/Catalog/Product/Edit" method="post" id="editProduct">
-        <input required placeholder="Name" name="name"
-
-               type="text" class="edit__form__input" id="form__name" value=<?= $product->getName() ?>
+        <div class="edit__form__row">
+                <p>Name:</p>
+                <label for="form__name">Name</label>
+                <input required placeholder="Empty" name="name"
+                   type="text" class="edit__form__row__input" id="form__name" value=<?= $product->getName() ?>
+                >
+        </div>
+        <div class="edit__form__row">
+            <p>Sku number:</p>
+            <label for="form__sku">Sku number</label>
+            <input placeholder="Empty"
+                name="sku" type="text" class="edit__form__row__input" id="form__sku" value=<?= $product->getSku() ?>
+            >
+        </div>
+        <div class="edit__form__row">
+            <p>Price($):</p>
+            <label for="form__price">Price in $</label>
+            <input required placeholder="Empty" name="price"
+                type="number" class="edit__form__row__input" id="form__price" value=<?= $product->getPrice() ?>
         >
-        <input placeholder="Number (SKU)"
-               name="sku" type="text" class="edit__form__input" id="form__sku" value=<?= $product->getSku() ?>
-        >
-
-        <input required placeholder="Price" name="price"
-               type="number" class="edit__form__input" id="form__price" value=<?= $product->getPrice() ?>
-        >
-
-        <input placeholder="Photo" name="photo" type="file"
-               class="edit__form__input" id="form__photo" value=<?= $product->getImageUrl() ?>
-        >
-
-        <textarea placeholder="Description" name="descr"
-                  class="edit__form__input" id="form__descr" value=<?= $product->getDescription() ?>
-        ><?= $product->getDescription() ?></textarea>
-
-        <select required name="category" class="edit__form__input" id="form__category">
-            <?php
-            foreach ($categories as $category){
-                ?>
-                <option value=<?= $category->getId()?>
-                        <?php if($category->getId() == $product->getCategoryId()){echo "selected";} ?> >
-                    <?= $category->getName() ?>
-                     </option>
+        </div>
+        <div class="edit__form__row">
+            <p>Category:</p>
+            <label for="form__category">Category</label>
+            <select required name="category" class="edit__form__row__input" id="form__category">
                 <?php
-            }
-            ?>
-        </select>
-
+                foreach ($categories as $category){
+                    ?>
+                    <option value=<?= $category->getId()?>
+                            <?php if($category->getId() == $product->getCategoryId()){echo "selected";} ?> >
+                        <?= $category->getName() ?>
+                    </option>
+                    <?php
+                }
+                ?>
+            </select>
+        </div>
+        <div class="edit__form__row">
+            <p>Description:</p>
+            <label for="form__descr">Description</label>
+            <textarea placeholder="Empty" name="descr"
+                      class="edit__form__row__input" id="form__descr"><?=
+                $product->getDescription()
+                ?></textarea>
+        </div>
+        <div class="edit__form__row">
+            <p>Product image:</p>
+            <label id="uploadLabel" for="form__photo">
+                <?php
+                if ($product->getImageUrl() !== "/images/default-product-image.png"){
+                    echo '<p>Image set:</p><img class="edit__form__row__image" src='.$product->getImageUrl().'  alt="productImage"/><p>Click here to change image</p>';
+                } else {
+                    echo 'Click here to set product image';
+                }
+                ?>
+            </label>
+            <input placeholder="Empty" name="photo" type="file"
+               class="edit__form__row__input" id="form__photo" value=<?= $product->getImageUrl() ?>
+            >
+        </div>
         <input id="id" name="id" type="hidden" value=<?= $product->getId() ?>>
-        <input type="submit" class="edit__form__input" id="form__submit">
-
+        <div class="edit__form__row">
+            <input type="submit" class="edit__form__row__input" id="form__submit">
+        </div>
     </form>
 </div>
 <script>

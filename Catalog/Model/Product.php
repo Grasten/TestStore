@@ -48,13 +48,18 @@ class Product
         return "/catalog/product/view/?id=".$this->data['id'];
     }
 
+    public function getDate():string
+    {
+        return $this->data['date'];
+    }
+
     /**
      * @param mixed $data
      */
     public function getImageUrl():string
     {
         if (empty($this->data['image'])){
-            return "/images/default.png";
+            return "/images/default-product-image.png";
         }
         return "/images/".$this->data['image'];
     }
