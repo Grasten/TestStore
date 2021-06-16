@@ -10,7 +10,7 @@
             ?>
 
             <div class="list__container__row" id=<?= $product->getId() ?>>
-                <p class="list__container__row__picture"><img src=<?= $product->getImageUrl() ?> alt="Image"></p>
+                <p class="list__container__row__picture"><img src="<?= $product->getImageUrl() ?>" alt="Image"></p>
                 <p class="list__container__row__name"><?=$product->getName()?></p>
                 <p class="list__container__row__price"><?=$product->getPrice()?>$</p>
                 <p class="list__container__row__description">Description: <?=$product->getDescription()?></p>

@@ -7,7 +7,7 @@
         <?php if ($categoryId || $sort || $query) {
             echo '<a class="list__toolbar__home"
            href="http://localhost/">
-            Show all products
+            Remove all filters
         </a>';
         }  else {
             echo '<div></div>';
@@ -48,7 +48,7 @@
         foreach ($products as $product){ ?>
             <a href=<?=$product->getUrl()?> class="list__container__item">
                 <div class="list__container__item__picture">
-                    <img alt="Image" src=<?= $product->getImageUrl() ?> />
+                    <img alt="Image" src="<?= $product->getImageUrl() ?>" />
                 </div>
                 <div class="list__container__item__name">
                     <?=$product->getName()?>

@@ -11,7 +11,7 @@
                 <p>Name:</p>
                 <label for="form__name">Name</label>
                 <input required placeholder="Empty" name="name"
-                   type="text" class="edit__form__row__input" id="form__name" value=<?= $product->getName() ?>
+                   type="text" class="edit__form__row__input" id="form__name" value="<?= $product->getName() ?>"
                 >
         </div>
         <div class="edit__form__row">
@@ -25,7 +25,7 @@
             <p>Price($):</p>
             <label for="form__price">Price in $</label>
             <input required placeholder="Empty" name="price"
-                type="number" class="edit__form__row__input" id="form__price" value=<?= $product->getPrice() ?>
+                type="number" class="edit__form__row__input" id="form__price" max="999999999" value=<?= $product->getPrice() ?>
         >
         </div>
         <div class="edit__form__row">
@@ -57,14 +57,15 @@
             <label id="uploadLabel" for="form__photo">
                 <?php
                 if ($product->getImageUrl() !== "/images/default-product-image.png"){
-                    echo '<p>Image set:</p><img class="edit__form__row__image" src='.$product->getImageUrl().'  alt="productImage"/><p>Click here to change image</p>';
+                    $url = str_replace(" ", "%20", $product->getImageUrl());
+                    echo '<p>Image set:</p><img class="edit__form__row__image" src='.$url.' alt="productImage"/><p>Click here to change image</p>';
                 } else {
                     echo 'Click here to set product image';
                 }
                 ?>
             </label>
             <input placeholder="Empty" name="photo" type="file"
-               class="edit__form__row__input" id="form__photo" value=<?= $product->getImageUrl() ?>
+               class="edit__form__row__input" id="form__photo" value="<?= $product->getImageUrl() ?>"
             >
         </div>
         <input id="id" name="id" type="hidden" value=<?= $product->getId() ?>>
